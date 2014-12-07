@@ -33,20 +33,20 @@
 		</div>
 	</div>
 	<div class="smallbar" ng-repeat="(key,value) in ordinateData track by $index" ng-style="{top:$index*30+185+'px'}">
-		<span class="badge details badge{{$index}}" style="position: absolute;  margin-top:-8px; right:0px">{{value}}</span><span class="title{{$index}}" style="text-align:right;border:0px solid;width:100px; position: absolute;  margin-top:-10px; margin-left:-105px" pop-over>{{key || 'Not categorized'}}</span>
+		<span class="badge details badge{{$index}}" style="position: absolute;  margin-top:-8px; right:0px">{{value}}</span><span class="title{{$index}}" style="text-align:right;border:0px solid;width:100px; position: absolute;  margin-top:-10px; margin-left:-105px" ng-click="focusOnData('none', key)">{{key || 'Not categorized'}}</span>
 	</div>
 	<div class="bar"></div>
-	<div  style="display: table;  height: 580px;  position: absolute;  overflow: hidden;  margin-left:10%;width: 80%;text-align:center" >
+	<div  style="display: table;  height: 555px;  position: absolute;  overflow: hidden;  margin-left:10%;width: 80%;text-align:center" >
 		<div class="circlerepeats" ng-repeat="(key, value) in process" on-finish-render="myFunc()">
-			<div class="circle arrondi axe{{$index}}" style="margin:0 auto" ng-style="{width:value+'px',height:value+'px'}" data-corner="{{Math.round(value/2)}}px" ng-click="focus(key)">
-				<span >{{value}}</span>
+			<div class="circle arrondi axe{{$index}}" style="margin:0 auto" ng-style="{width:value.total+'px',height:value.total+'px'}" data-corner="{{Math.round(value.total/2)}}px" ng-click="focusOnData(key)">
+				<span >{{value.total}}</span>
 			</div>
-			<a ng-repeat="(keyOrdinate, detail) in focusData track by $index" href="#" ng-show="focusname==key || focusname=='all'" ng-click="focusOnData(key, keyOrdinate)">
+			<a ng-repeat="detail in value.details track by $index" href="#" ng-show="(focusAbcissName===key || focusAbcissName==='none') && (value.names[$index]===focusOrdinateName || focusOrdinateName==='none') " ng-click="focusOnData(key, value.names[$index])">
 				<span ng-if="detail>0" class="badge details badge{{$index}}" ng-style="{top:$index*30+'px'}">{{detail}}</span>
 			</a>{{key}}
 		</div>
 	</div>
-	<button class="btn btn-lg" style="position: absolute;top:425px;margin-left:10px" ng-click="focus('all')">Show all</button>
+	<button class="btn btn-lg" style="position: absolute;top:425px;margin-left:10px" ng-click="focusOnData('none','all')">Show all</button>
 	<div class="row" style ="position: absolute;top:550px">
 		<div class="col-md-12">
 			<div class="alert alert-info">
@@ -56,7 +56,7 @@
 				</div>
 				<div class="col-md-8">
  					Focused ({{ reports.length}}) 
- 					<ol class="breadcrumb" style="display:inline">
+ 					<ol ng-show='filters' class="breadcrumb" style="display:inline">
 					  <li class="active" ng-repeat="filter in filters">{{filter}}</li>
 					</ol>
 					<button ng-show='filters' class="btn btn-default" ng-click="focusOnData()">Clear</button>

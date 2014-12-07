@@ -11,7 +11,6 @@ angular.module('infographieApp')
   });*/
 
   $scope.getOrdinateData = function(ordinate) {
-    $scope.focusData = {};
     $scope.ordinate = ordinate;
     switch($scope.ordinate) {
       case 'solutions':
@@ -31,51 +30,53 @@ angular.module('infographieApp')
             $scope.ordinateItem = 'solution';
     }
     $scope.openGroupBy=false;
-  };
-
-  $scope.focus = function(name){
-    // filter
-    $scope.focusname = name;
-    $scope.dataArray = (name === 'all') ? alldata : $(alldata).filter(function (key,data){return data.processLevel1.indexOf(name) >= 0});
-
-    // reinit
-    $scope.focusData = {};
-    angular.forEach($scope.ordinateData, function(data, key){
-        $scope.focusData[key] = 0;
-    });
-
-    //agreggate
-    angular.forEach($scope.dataArray, function(data){
-        angular.forEach(data[$scope.ordinateItem].split(", "), function(datasplit){
-             $scope.focusData[datasplit] = (!$scope.focusData[datasplit]) ? 1 : $scope.focusData[datasplit] + 1;  
-        });
-    });
-
-    //console.log( $scope.focusData);
+     $scope.focusOnData();
   };
 
  $scope.focusOnData = function(keyAbciss, keyOrdinate){
 
+    $scope.focusAbcissName = (typeof keyAbciss == 'undefined') ? 'none' : keyAbciss;
+    $scope.focusOrdinateName = (typeof keyOrdinate == 'undefined') ? 'none' :  keyOrdinate;
+
     $scope.filters = [];
-    if (typeof keyAbciss !== 'undefined') { $scope.filters.push('Process :' + keyAbciss)}
+    if (typeof keyAbciss !== 'undefined' && keyAbciss !== 'none') { $scope.filters.push('Process :' + keyAbciss)}
     if (typeof keyOrdinate !== 'undefined') {$scope.filters.push($scope.ordinate + ' :' + keyOrdinate)}
 
-    $scope.dataArray = (typeof keyAbciss == 'undefined') ? alldata : $(alldata).filter(function (key,data){return data.processLevel1.indexOf(keyAbciss) >= 0});
-    console.log( $scope.dataArray);
-    $scope.dataArray = (typeof keyOrdinate == 'undefined') ?  $scope.dataArray : $($scope.dataArray).filter(function (key,data){return data[$scope.ordinateItem].indexOf(keyOrdinate) >= 0});
+    $scope.dataArrayAbciss = (typeof keyAbciss == 'undefined' || keyAbciss == 'none') ? alldata : $(alldata).filter(function (key,data){return data.processLevel1.indexOf(keyAbciss) >= 0});
+    $scope.dataArray = (typeof keyOrdinate == 'undefined' || keyOrdinate == 'all') ?  $scope.dataArrayAbciss : $($scope.dataArrayAbciss).filter(function (key,data){return data[$scope.ordinateItem].indexOf(keyOrdinate) >= 0});
     //console.log( $scope.dataArray);
 
     $scope.reports = angular.copy( $scope.dataArray);
     if (typeof $scope.tableParams !== 'undefined') {$scope.tableParams.reload()};
+   
+    angular.forEach($scope.process, function(dataProcess, keyProcess){
 
+        // reinit
+        dataProcess.names = [];
+        dataProcess.details = [];
+        angular.forEach($scope.ordinateData, function(dataOrdinate,keyOrdinate){
+            dataProcess.names.push(keyOrdinate);
+            dataProcess.details.push(0);
+        });
 
+        angular.forEach(alldata, function(dataAll, keyAll){
+            if (dataAll.processLevel1.indexOf(keyProcess)>=0) {
+              var index = 0;
+              angular.forEach($scope.ordinateData, function(dataOrdinate, keyOrdinate){
+                  angular.forEach(dataAll[$scope.ordinateItem].split(", "), function(datasplit){
+                      if (datasplit == keyOrdinate ) { dataProcess.details[index] += 1;} 
+                  });
+                  index +=1;
+              });
+            }
+        });
+    });
+    console.log($scope.process);
  };
 
-
-  $scope.ordinate = 'solutions';
   $scope.groupBy = ['solutions','types','hierarchies'];
+  $scope.process = {"Structure Lead": {total:0,details:[]},"Project Lead": {total:0,details:[]},"Study Lead": {total:0,details:[]},"Study Conduct": {total:0,details:[]}};
   $scope.categories = {};
-  $scope.process = {"Structure Lead":0,"Project Lead":0,"Study Lead":0};
   $scope.solutions = {};
   $scope.hierarchies = {};
   $scope.types = {};
@@ -83,7 +84,7 @@ angular.module('infographieApp')
 // calculate the results    
     angular.forEach(alldata, function(data){
         angular.forEach(data.processLevel1.split(", "), function(datasplit){
-             $scope.process[datasplit] = (!$scope.process[datasplit]) ? 1 : $scope.process[datasplit] + 1;  
+             $scope.process[datasplit].total = (!$scope.process[datasplit].total ) ? 1 : $scope.process[datasplit].total  + 1;  
         });
         angular.forEach(data.category.split(", "), function(datasplit){
              $scope.categories[datasplit] = (!$scope.categories[datasplit]) ? 1 : $scope.categories[datasplit] + 1;  
