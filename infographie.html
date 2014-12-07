@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<head>
+	<link href="Bootstrap-min.css" rel="stylesheet" type="text/css"/>
+	<link href="ng-table.min.css" rel="stylesheet" type="text/css"/>
+	<link href="app.css" rel="stylesheet" type="text/css"/>
+</head>
+<body ng-app="infographieApp" ng-controller="appCtrl">
+	<div style="margin-left:50px;">
+		<h2>Business Intelligence's Cartography of a Clinical Trial</h2>
+		<p>Number of existing business intelligence deliverables </p>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="alert alert-info">
+				<div class="btn-group" data-ng-class="{open: openGroupBy}">
+					<button class="btn " data-ng-click="openGroupBy=!openGroupBy">Group by {{ordinate}}</button>
+					<button class="btn dropdown-toggle" data-ng-click="openGroupBy=!openGroupBy"><span class="caret"></span></button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+						<li data-ng-repeat="value in groupBy"> <a data-ng-click="getOrdinateData(value)">{{value}}</a></li>
+					</ul>
+				</div>
+				<div class="btn-group pull-right" data-ng-class="{open: open}">
+					<button class="btn btn-default">Filter by Company</button>
+					<button class="btn dropdown-toggle" data-ng-click="open=!open"><span class="caret"></span></button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+						<li><a data-ng-click="checkAll()"><i class="icon-ok-sign"></i>  Check All</a></li>
+						<li><a data-ng-click="selectedCompany=[];"><i class="icon-remove-sign"></i>  Uncheck All</a></li>
+						<li class="divider"></li>
+						<li data-ng-repeat="company in companyList"> <a data-ng-click="setSelectedClient()">{{company.name}}<span data-ng-class="isChecked(company.id)"></span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="smallbar" ng-repeat="(key,value) in ordinateData track by $index" ng-style="{top:$index*30+185+'px'}">
+		<span class="badge details badge{{$index}}" style="position: absolute;  margin-top:-8px; right:0px">{{value}}</span><span class="title{{$index}}" style="text-align:right;border:0px solid;width:100px; position: absolute;  margin-top:-10px; margin-left:-105px" pop-over>{{key || 'Not categorized'}}</span>
+	</div>
+	<div class="bar"></div>
+	<div  style="display: table;  height: 580px;  position: absolute;  overflow: hidden;  margin-left:10%;width: 80%;text-align:center" >
+		<div class="circlerepeats" ng-repeat="(key, value) in process" on-finish-render="myFunc()">
+			<div class="circle arrondi axe{{$index}}" style="margin:0 auto" ng-style="{width:value+'px',height:value+'px'}" data-corner="{{Math.round(value/2)}}px" ng-click="focus(key)">
+				<span >{{value}}</span>
+			</div>
+			<a ng-repeat="(keyOrdinate, detail) in focusData track by $index" href="#" ng-show="focusname==key || focusname=='all'" ng-click="focusOnData(key, keyOrdinate)">
+				<span ng-if="detail>0" class="badge details badge{{$index}}" ng-style="{top:$index*30+'px'}">{{detail}}</span>
+			</a>{{key}}
+		</div>
+	</div>
+	<button class="btn btn-lg" style="position: absolute;top:425px;margin-left:10px" ng-click="focus('all')">Show all</button>
+	<div class="row" style ="position: absolute;top:550px">
+		<div class="col-md-12">
+			<div class="alert alert-info">
+			<div class="row">
+				<div class="col-md-4">
+					Total : {{ alldata.length}}
+				</div>
+				<div class="col-md-8">
+ 					Focused ({{ reports.length}}) 
+ 					<ol class="breadcrumb" style="display:inline">
+					  <li class="active" ng-repeat="filter in filters">{{filter}}</li>
+					</ol>
+					<button ng-show='filters' class="btn btn-default" ng-click="focusOnData()">Clear</button>
+				</div>
+			</div>
+			</div>
+			<table ng-table="tableParams" show-filter="true" class="table">
+				<tr ng-repeat="report in $data">
+					<td data-title="'Solution'" filter="{ 'solution': 'text' }" style="width:80px">
+						<a class="title1" href="">{{report.solution}}</a>
+					</td>
+					<td data-title="'Type'" filter="{ 'type': 'text' }" style="width:80px">
+						<a href="">{{report.type}}</a>
+					</td>
+					<td data-title="'Name'" filter="{ 'name': 'text' }">
+						<a href="{{report.link}}">{{report.name}}</a>
+					</td>
+					<td data-title="'Category'" filter="{ 'category': 'text' }">
+						{{report.category}}
+					</td>
+					<td data-title="'Level Hierarchy'" filter="{ 'levelHierarchy': 'text' }">
+						{{report.levelHierarchy}}
+					</td>
+					<td data-title="'Process Level 1'" filter="{ 'processLevel1': 'text' }">
+						{{report.processLevel1}}
+					</td>
+					<td data-title="'Level 2'" filter="{ 'processLevel2': 'text' }">
+						{{report.processLevel2}}
+					</td>
+					<td data-title="'Level 3'" filter="{ 'processLevel3': 'text' }">
+						{{report.processLevel3}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!-- Javascript -->	
+	<script src="jquery-1.11.1.min.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="jquery.corner.js"></script> <!--  workaround border radius IE8  -->	
+	<script src="ng-table.min.js"></script>
+	<script src="services.js"></script>
+	<script src="controller.js"></script>
+
+</body>
+</html>

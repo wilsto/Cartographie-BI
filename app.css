@@ -1,0 +1,79 @@
+.circle
+{
+	border-radius: 50%;  
+	-webkit-transition:all 0.2s linear;
+	-moz-transition:all 0.2s linear;
+	-ms-transition:all 0.2s linear;
+	transition:all 0.2s linear;
+	cursor:  pointer;
+
+}
+
+.circlerepeats {
+	margin:0 auto;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.bar {
+	height:4px;
+	background:#ccc;
+	width:80%;
+	margin-left:10%;
+	position:absolute;
+	top:445px;
+}
+
+.smallbar {
+	height:1px;
+	background:#eee;
+	width:80%;
+	margin-left:10%;
+	position:absolute;
+}
+
+.circle span {
+	position:absolute;
+	top:46% ;
+	margin-left: -8px;
+	font-weight: bold;
+}
+
+.details{
+	position:absolute;
+	width:50px;
+	margin-left: 30px;
+}
+
+.axe0{background:#B1B1B1;}
+.axe1{background:#F9AA99;}
+.axe2{background:#F6F5B2;}
+.axe3{background:#EDC484;}
+.axe4{background:#DEECC8;}
+.axe5{background:#ACE3F8;}
+.axe6{background:#FFBFD7;}
+.axe7{background:#7D92BF;}
+.axe8{background:#EDC484;}
+.axe9{background:#1E66EE;}
+
+.badge0{background:#7B788B;}
+.badge1{background:#7FBA3A;}
+.badge2{background:#E64E8B;}
+.badge3{background:#E27C1A;}
+.badge4{background:#7D40B7;}
+.badge5{background:#F0413C;}
+.badge6{background:#46BCCA;}
+.badge7{background:#933418;}
+.badge8{background:#EDC484;}
+.badge9{background:#1E66EE;}
+
+.title0{color:#7B788B;}
+.title1{color:#7FBA3A;}
+.title2{color:#E64E8B;}
+.title3{color:#E27C1A;}
+.title4{color:#7D40B7;}
+.title5{color:#F0413C;}
+.title6{color:#46BCCA;}
+.title7{color:#933418;}
+.title8{color:#EDC484;}
+.title9{color:#1E66EE;}

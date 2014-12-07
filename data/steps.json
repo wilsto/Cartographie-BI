@@ -1,0 +1,10 @@
+[
+    {'name:'Structure Lead',size:46,color:'#B1B1B1', details:[29,17,0,0,0,0,0,0,0,0]},
+    {name:'Project Lead',size:37,color:'#F9AA99',details:[6,31,0,0,0,0,0,0,0,0]},
+    {name:'Study Lead',size:32,color:'#F6F5B2',details:[2,5,2,5,18,0,0,0,0,0]},
+    {name:'Study Setup',size:66,color:'#EDC484',details:[0,0,0,19,32,4,3,8,0,0]},
+    {name:'Study Conduct',size:390,color:'#DEECC8',details:[0,38,2,64,95,9,114,7,44,17]},
+    {name:'Study Exploitation',size:39,color:'#ACE3F8',details:[0,0,0,19,16,0,0,4,0,0]},
+    {name:'Study Declaration',size:10,color:'#FFBFD7',details:[0,0,0,0,0,0,0,0,0,10]},
+    {name:'Study Submission',size:20,color:'#7D92BF',details:[0,0,0,0,0,0,0,0,0,20]}
+]
